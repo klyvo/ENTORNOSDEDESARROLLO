@@ -8,7 +8,17 @@ Esperant que el nostre projecte TapatApp, sigui del seu interès.
 
 
 ## Objectius del Projecte
--Control del tiempo del pegado del infante.
--Compartir información del tratamiento con el servicio médico.
--Acceso restingido por tipo de usuario al control del pegado.
--
+- Control del temps que l’infant porta el pegat.
+- Control de la meitat del temps que l’infant està despert.
+- Control del temps fix de pegat a partir dels 8 anys.
+- Possibilitat de compartir la informació del tractament amb el servei mèdic.
+- Accés restringit segons el tipus d’usuari al control del pegat.
+
+## Actors de la App
+
+- Administrador
+- Servei medic (Metges oftalmòlegs)
+- Tutor (pares/mares)
+- Cuidadors (mestres, avis...)
+- Infants
+- Part pública
