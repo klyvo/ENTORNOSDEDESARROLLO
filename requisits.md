@@ -8,7 +8,6 @@ Esperant que el nostre projecte TapatApp, sigui del seu interès.
 
 
 ## Objectius del Projecte
-
 -Control del tiempo del pegado del infante.
 -Compartir información del tratamiento con el servicio médico.
 -Acceso restingido por tipo de usuario al control del pegado.
