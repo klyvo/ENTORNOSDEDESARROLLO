@@ -17,4 +17,4 @@
 - Iteració 5: 09/04 - 29/04 (12 hores) - Pegat i testing
 
 # Estructura del projecte
-[Estructura del projecte](diagramaprototip.md)
+[Estructura del projecte](diagramaprototip.mermaid)
