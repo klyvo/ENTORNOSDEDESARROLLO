@@ -18,3 +18,12 @@
 
 # Estructura del projecte
 [Estructura del projecte](charts/diagramaprototip.mermaid)
+
+## End-Points WebService
+
+Definició del End-point del WebService: 
+
+
+| URL | Method | Paràmetres | Descripció | Output |
+|--------------|--------------|--------------|----------|----------|
+| /user       | GET          | username <String> obligatori | Retorna la informació de l'usuari | { "code_response=1} |
