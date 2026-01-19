@@ -19,6 +19,7 @@ users = [
     User(username="maria",nom="Maria Sams",password="12345", email="maria@gmail.com",rol="admin")
 ]
 
+
 class UserDao:
     def __init__(self):
         self.users=users
