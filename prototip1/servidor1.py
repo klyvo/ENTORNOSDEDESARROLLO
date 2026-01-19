@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request 
+from flask import Flask, jsonify, request
 
 class User:
     def __init__(self,username, nom, password, email, rol="tutor"):
@@ -29,7 +29,7 @@ class UserDao:
             if u.username == uname:
                 user = u.__dict__
         return user
-
+    
     def getAllUsers(self):
         resposta = []
         for u in self.users:
@@ -52,21 +52,26 @@ app = Flask(__name__)
 @app.route('/user',methods=['GET'])
 def user():
     resposta=""
+    # Parametres
     username = request.args.get("username",default="")
+    # Si els paràmetres OK
     if username != "":
+        # Anar al DAO Server i cercar User per username
         resposta=user_dao.getUserByUsername(username)
+        # respondre amb dades Ususari si trobat
         if resposta == None:
             resposta = {"msg":"Usuari No trobat"}
-    else:
+    else:  #  Si els paràmetres NO ok 
+        # respondre error
         resposta = {"msg":"Falta paràmetre Username"}
     
     return jsonify(resposta)
-
 
 @app.route('/getuser', methods=['GET'])
 def getuser():
     resposta = user_dao.getAllUsers()
     return jsonify(resposta)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
