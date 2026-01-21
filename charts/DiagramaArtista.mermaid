@@ -1,0 +1,24 @@
+classDiagram
+
+    class Song {
+        - id : int
+        - name : String
+        - duration : float
+    }
+
+    class Album {
+        - id : int
+        - title : String
+    }
+
+    class Artista {
+        - id : int
+        - nom : String
+
+        
+    }
+
+    %% Relaciones
+Album "1" ..> "N" Song : contiene
+Artista "1" ..> "M" Album : crea
+
