@@ -43,7 +43,7 @@ class ViewConsole:
         return None
     
 user_daoClient = daoUserClient()
-u=user_daoClient.getUserByUsername("rob")
-print(u.nom,u.email,u.rol)
-u=user_daoClient.getUserByUsername("robdsadasdasd")
-print(u)
+a=user_daoClient.getUserByUsername("rob")
+print(a.nom,a.email,a.rol)
+a=user_daoClient.getUserByUsername("robdsadasdasd")
+print(a)
