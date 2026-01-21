@@ -3,7 +3,7 @@
 ## Hola ig
 
 # Requisis tecnics Tapatapp!
-[Requisits tecnics](requisits_tecnics.md)
+[Requisits tecnics](requisitsTecnics.md)
 
 # Requisits Funcionals Tapatapp!
 [Requisits funcionals](requisits.md)
