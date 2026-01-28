@@ -1,0 +1,60 @@
+classDiagram
+    class Usuari {
+        -nom: String
+        -email: String
+        -contrasenya: String
+        -tipusUsuari: String
+        +registrar()
+        +iniciarSessio()
+        +tancarSessio()
+    }
+
+    class Client {
+        +cercarEsdeveniments()
+        +comprarEntrada()
+        +veureEntrades()
+    }
+
+    class Administrador {
+        +crearEsdeveniment()
+        +modificarEsdeveniment()
+        +eliminarEsdeveniment()
+    }
+
+    class Esdeveniment {
+        -nom: String
+        -descripcio: String
+        -data: Date
+        -ubicacio: String
+        -entradesDisponibles: int
+        +afegirEntrada()
+        +actualitzarEsdeveniment()
+        +cancelarEsdeveniment()
+    }
+
+    class Entrada {
+        -preu: float
+        -estat: String
+        +reservar()
+        +vendre()
+        +cancelar()
+    }
+
+    class Pagament {
+        -import: float
+        -data: Date
+        -metode: String
+        +processarPagament()
+        +validarPagament()
+        +cancelarPagament()
+    }
+
+    %% Herència
+    Usuari <|-- Client
+    Usuari <|-- Administrador
+
+    %% Relacions
+    Client "1" --> "0..*" Entrada : compra
+    Esdeveniment "1" --> "1..*" Entrada : conté
+    Administrador "1" --> "0..*" Esdeveniment : gestiona
+    Entrada "1" --> "1" Pagament : genera
