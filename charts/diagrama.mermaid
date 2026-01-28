@@ -1,51 +1,49 @@
----
-config:
-  layout: dagre
----
 classDiagram
+direction LR
     class Usuari {
-        -id: int
-        -nom: String
-        -email: String
-        -contrasenya: String
-        -tipusUsuari: String
-        +registrar()
-        +iniciarSessio()
-        +comprarEntrades()
+	    -id: int
+	    -nom: String
+	    -email: String
+	    -contrasenya: String
+	    -tipusUsuari: String
+	    +registrar()
+	    +iniciarSessio()
+	    +comprarEntrades()
     }
 
     class Client {
-        +cercarEsdeveniments()
+	    +cercarEsdeveniments()
     }
 
     class Administrador {
-        +crearEsdeveniment()
-        +modificarEsdeveniment()
-        +eliminarEsdeveniment()
+	    +crearEsdeveniment()
+	    +modificarEsdeveniment()
+	    +eliminarEsdeveniment()
     }
 
     class Esdeveniment {
-        -id: int
-        -nom: String
-        -descripcio: String
-        -data: Date
-        -ubicacio: String
-        -entradesDisponibles: int
-        -idUsuari: int
-        +afegirEntrada()
-        +actualitzarEsdeveniment()
-        +cancelarEsdeveniment()
+	    -id: int
+	    -nom: String
+	    -descripcio: String
+	    -data: Date
+	    -ubicacio: String
+	    -entradesDisponibles: int
+	    -idUsuari: int
+	    +afegirEntrada()
+	    +actualitzarEsdeveniment()
+	    +cancelarEsdeveniment()
     }
 
     class Entrada {
-        -id: int
-        -preu: float
-        -estat: String
-        -idEsdeveniment: int
-        +reservar()
-        +vendre()
-        +cancelar()
+	    -id: int
+	    -preu: float
+	    -estat: String
+	    -idEsdeveniment: int
+	    +reservar()
+	    +vendre()
+	    +cancelar()
     }
+
     Usuari <|-- Client
     Usuari <|-- Administrador
     Usuari "1" --> "0..*" Entrada : compra
