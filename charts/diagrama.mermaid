@@ -1,18 +1,21 @@
+---
+config:
+  layout: dagre
+---
 classDiagram
     class Usuari {
+        -id: int
         -nom: String
         -email: String
         -contrasenya: String
         -tipusUsuari: String
         +registrar()
         +iniciarSessio()
-        +tancarSessio()
+        +comprarEntrades()
     }
 
     class Client {
         +cercarEsdeveniments()
-        +comprarEntrada()
-        +veureEntrades()
     }
 
     class Administrador {
@@ -22,39 +25,29 @@ classDiagram
     }
 
     class Esdeveniment {
+        -id: int
         -nom: String
         -descripcio: String
         -data: Date
         -ubicacio: String
         -entradesDisponibles: int
+        -idUsuari: int
         +afegirEntrada()
         +actualitzarEsdeveniment()
         +cancelarEsdeveniment()
     }
 
     class Entrada {
+        -id: int
         -preu: float
         -estat: String
+        -idEsdeveniment: int
         +reservar()
         +vendre()
         +cancelar()
     }
-
-    class Pagament {
-        -import: float
-        -data: Date
-        -metode: String
-        +processarPagament()
-        +validarPagament()
-        +cancelarPagament()
-    }
-
-    %% Herència
     Usuari <|-- Client
     Usuari <|-- Administrador
-
-    %% Relacions
-    Client "1" --> "0..*" Entrada : compra
-    Esdeveniment "1" --> "1..*" Entrada : conté
+    Usuari "1" --> "0..*" Entrada : compra
     Administrador "1" --> "0..*" Esdeveniment : gestiona
-    Entrada "1" --> "1" Pagament : genera
+    Esdeveniment "1" --> "1..*" Entrada : te
