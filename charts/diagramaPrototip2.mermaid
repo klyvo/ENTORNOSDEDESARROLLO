@@ -1,47 +1,49 @@
 classDiagram
+direction LR
     class WebService {
-        +login() JSON
-        +loginByToken() JSON
-        +getChildByUserId() JSON
+	    +login() JSON
+	    +loginByToken() JSON
+	    +getChildByUserId() JSON
     }
 
     class User {
-        +int id
-        +string username
-        +string nom
-        +string password
-        +string email
-        +string rol
-        +string token
+	    +int id
+	    +string username
+	    +string nom
+	    +string password
+	    +string email
+	    +string rol
+	    +string token
     }
 
     class Child {
-        +int id
-        +string child_name
-        +int sleep_average
-        +int treatment_id
-        +int time
+	    +int id
+	    +string child_name
+	    +int sleep_average
+	    +int treatment_id
+	    +int time
     }
 
     class Tap {
-        +int id
-        +int child_id
-        +datetime timestamp
+	    +int id
+	    +int child_id
+	    +datetime timestamp
     }
 
     class UserDao {
-        -list users
-        +getUserByUsername(username) User
-        +validateToken(token) User
-        +authenticate(username, password) User
+	    -list users
+	    +getUserByUsername(username) User
+	    +validateToken(token) User
+	    +authenticate(username, password) User
     }
 
     class ChildDao {
-        -list children
-        +getChildrenByUserId(iduser) List~Child~
+	    -list children
+	    +getChildrenByUserId(iduser) List~Child~
     }
 
     WebService --> UserDao : utiliza
     WebService --> ChildDao : utiliza
     UserDao ..> User : gestiona
     ChildDao ..> Child : gestiona
+    ChildDao ..> User : gestiona
