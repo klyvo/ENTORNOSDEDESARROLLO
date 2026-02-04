@@ -19,6 +19,8 @@
 # Estructura del projecte
 [Estructura del projecte](charts/diagramaprototip.mermaid)
 
+
+
 ## End-Points WebService
 
 Definició del End-point del WebService: 
@@ -27,3 +29,18 @@ Definició del End-point del WebService:
 | URL | Method | Paràmetres | Descripció | Output |
 |--------------|--------------|--------------|----------|----------|
 | /user       | GET          | username <String> obligatori | Retorna la informació de l'usuari | { "code_response=1} |
+
+
+## Prototip 2
+
+### Diagrama de classes 
+
+Diagrama de classes del Server
+
+Webservice, Dao's, ADT(Abstract Data Class) User, Child Tap...
+
+**Client**
+
+### End-Points
+
+Definir els EndPoints necessaris per implementar el Prototip 2

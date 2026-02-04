@@ -1,5 +1,3 @@
-from flask import Flask, jsonify, request
-import requests
 class User:
     def __init__(self,username, nom, password, email, rol="tutor"):
         self.username=username
@@ -19,6 +17,7 @@ users = [
     User(username="maria",nom="Maria Sams",password="12345", email="maria@gmail.com",rol="admin")
 ]
 
+
 class UserDao:
     def __init__(self):
         self.users=users
@@ -30,40 +29,20 @@ class UserDao:
                 user = u.__dict__
         return user
     
-    def getAllUsers(self):
-        resposta = []
-        for u in self.users:
-            resposta.append(u.__dict__)
-        return resposta
-
-# Instanciem el Dao User
-user_dao = UserDao()
-
-app = Flask(__name__)
-
-@app.route('/user',methods=['GET'])
-def user():
-    resposta=""
-    # Parametres
-    username = request.args.get("username",default="")
-    # Si els paràmetres OK
-    if username != "":
-        # Anar al DAO Server i cercar User per username
-        resposta=user_dao.getUserByUsername(username)
-        # respondre amb dades Ususari si trobat
-        if resposta == None:
-            resposta = {"msg":"Usuari No trobat"}
-    else:  #  Si els paràmetres NO ok 
-        # respondre error
-        resposta = {"msg":"Falta paràmetre Username"}
+    def addUser(self,u):
+       self.users.append(u)
+       return u
     
-    return jsonify(resposta)
-
-@app.route('/getuser', methods=['GET'])
-def getuser():
-    resposta = user_dao.getAllUsers()
-    return jsonify(resposta)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    def getAllUsers(self):
+        return [user.__dict__ for user in self.users]
+        #return self.users
+# Test DAO
+'''
+user_dao = UserDao()
+a=user_dao.getAllUsers()
+print(a)
+response=user_dao.getUserByUsername("maria")
+print(response)
+response=user_dao.getUserByUsername("AAAA")
+print(response)'''
+# End TEST
