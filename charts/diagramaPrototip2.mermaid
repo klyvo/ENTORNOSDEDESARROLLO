@@ -1,0 +1,63 @@
+---
+config:
+  layout: elk
+---
+classDiagram
+direction LR
+    class WebService {
+	    +login(username, password) JSON
+	    +loginByToken(token) JSON
+	    +getChildrenByUserId(userId) JSON
+    }
+
+    class UserDAO {
+	    -List~User~ users
+	    +findUserByUsername(username) User
+	    +verifyToken(token) User
+	    +authenticate(username, password) User
+    }
+
+    class ChildDAO {
+	    -List~Child~ children
+	    +findChildrenByUserId(userId) List~Child~
+    }
+
+    class TapDAO {
+	    +saveTap(tap)
+	    +updateTap(tap)
+	    +removeTap(tapId)
+	    +findTapsByChildName(name)
+    }
+
+    class User {
+	    +int id
+	    +string username
+	    +string fullName
+	    +string password
+	    +string email
+	    +string role
+	    +string token
+    }
+
+    class Child {
+	    +int id
+	    +string childName
+	    +int sleepAverage
+	    +int treatmentId
+	    +int time
+    }
+
+    class Tap {
+	    +int id
+	    +int childId
+	    +int userId
+	    +datetime timestamp
+    }
+
+    WebService --> UserDAO : consulta
+    WebService --> ChildDAO : consulta
+    UserDAO ..> User : persiste
+    ChildDAO ..> Child : persiste
+    ChildDAO ..> User : vincula_con
+    TapDAO ..> Tap : gestiona
+    TapDAO ..> Child : registra_para
