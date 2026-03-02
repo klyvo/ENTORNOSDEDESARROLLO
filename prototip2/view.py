@@ -20,7 +20,16 @@ class ViewConsole:
                 case 1:
                     # login
                     print("---Login---")
+                    self.viewLogin()
                 
                 case 2:
                     #exit
                     print("Exiting the application. Goodbye!")
+
+    def viewLogin(self):
+        print("View LOGIN")
+        print("Enter username or email:")
+        username = input()
+        password = input("Enter password:")
+        # DaoUserClient ha de fer login
+        # depenent de la resposta, va a child o User not Authenticated
