@@ -91,4 +91,3 @@ treatments = [
     Treatment(id=1, name='Hour'),
     Treatment(id=2, name='percentage')
 ]
-

@@ -25,6 +25,7 @@ class ViewConsole:
                 case 2:
                     #exit
                     print("Exiting the application. Goodbye!")
+                    options = 2
 
     def viewLogin(self):
         print("View LOGIN")

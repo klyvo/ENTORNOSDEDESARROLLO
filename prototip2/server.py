@@ -45,7 +45,7 @@ def login():
         response = ApiResponse(
             msg="Not authenticated",
             coderesponse="0",
-            data=user
+            data=""
         )
     return jsonify(asdict(response)),200
 
