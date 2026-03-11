@@ -1,36 +1,53 @@
+from User import *
+from DaoUserClient import *
+
 class ViewConsole:
 
-    
-    def viewShowMenu(self):
-        print("1. Login")
-        print("2. Exit")
-        while True: 
-            option = input("Select an option: ")
+    daoClient = DaoUserClient()
+
+    def viewShowmenu(self):
+        print("1: Login")
+        print("2: Quit")
+        while(True):
+            option=input("Enter Option: ")
             if(option.isdigit()):
-                optionInt = int(option)
-                if optionInt in [1, 2]:
+                optionInt=int(option)
+                if (optionInt > 0 and optionInt < 3):
                     return optionInt
-            print("Invalid option. Please select 1 or 2.")
-                
+               
+            print("ERROR: Introduce un valor correcto")
+
     def viewGeneral(self):
-        option = -1
-        while option != 2:
-            option = self.viewShowMenu()
+        option=-1
+        while(option!=2):
+            option=self.viewShowmenu()
             match option:
                 case 1:
-                    # login
-                    print("---Login---")
                     self.viewLogin()
-                
+                    #login
                 case 2:
-                    #exit
-                    print("Exiting the application. Goodbye!")
-                    options = 2
+                    #Quit
+                    print("Saliendo de la aplicación...")
 
     def viewLogin(self):
         print("View LOGIN")
-        print("Enter username or email:")
-        username = input()
-        password = input("Enter password:")
-        # DaoUserClient ha de fer login
-        # depenent de la resposta, va a child o User not Authenticated
+        print("Introduce el username/email i el password")
+        username=input("Username o email: ")
+        passwd=input("Password: ")
+        user=User("",username, passwd, "", "", "")
+        resposta_user = self.daoClient.login(user)
+
+        if resposta_user:
+            self.viewUser(resposta_user)
+        else:
+            self.viewUserNotAuthenticated()
+
+    def viewUser(self,user):
+        print("View User Authenticated")
+        print(user)
+
+    def viewUserNotAuthenticated(self):
+        print("User NOT Authenticated")
+
+viewConsole=ViewConsole()
+viewConsole.viewGeneral()

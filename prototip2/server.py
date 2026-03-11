@@ -1,53 +1,114 @@
 from flask import Flask, request, jsonify
-from DaoServer import UserDAO
-from dataclasses import dataclass, asdict
-
-@dataclass
-class ApiResponse():
-    msg: str
-    coderesponse: str
-    data: list
-
-# Instantiate DAO
-userDao=UserDAO()
+from dadesServer import *
+from DaoServer import *
+import uuid
 
 app = Flask(__name__)
 
-@app.route('/getusers', methods=['GET'])
-def getusers():
-    response = ApiResponse(
-        msg="All Users",
-        coderesponse="1",
-        data=userDao.getAllUsers()
-    )
-    return jsonify(asdict(response)),200
+user_dao = UserDao()
+child_dao = ChildDao()
+tap_dao = TapDao()
+status_dao = StatusDao()
+role_dao = RoleDao()
+treatment_dao = TreatmentDao()
 
+
+# Login
 
 @app.route('/login', methods=['POST'])
 def login():
-    # Existing username/password login
+
+    token_header = request.headers.get("Authorization")
+
+    # Login por token
+    if token_header:
+        user = user_dao.getUserByToken(token_header)
+
+        if user:
+            return jsonify({
+                "id": user.id,
+                "username": user.username,
+                "password": user.password,
+                "email": user.email,
+                "token": user.token,
+                "idrole": user.idrole,
+                "msg": "Usuari Ok",
+                "coderesponse": "1"
+            }), 200
+
+        return jsonify({
+            "coderesponse": "0",
+            "msg": "No validat"
+        }), 400
+
+
+    # Login normal
     data = request.get_json()
-    identifier = data.get('username')  # username or email
-    password = data.get('password')
-    user = userDao.login(identifier, password)
-    response = ApiResponse(
-            msg="login",
-            coderesponse="-1",
-            data=user
-        )
+
+    username = data.get("username")
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({
+            "coderesponse": "0",
+            "msg": "No validat"
+        }), 400
+
+    user = user_dao.login(username, password)
+
     if user:
-        response = ApiResponse(
-            msg="Authenticated",
-            coderesponse="1",
-            data=user
-        )
-    else:
-        response = ApiResponse(
-            msg="Not authenticated",
-            coderesponse="0",
-            data=""
-        )
-    return jsonify(asdict(response)),200
+        # Para generar el token
+        user.token = str(uuid.uuid4())
+
+        return jsonify({
+            "id": user.id,
+            "username": user.username,
+            "password": user.password,
+            "email": user.email,
+            "token": user.token,
+            "idrole": user.idrole,
+            "msg": "Usuari Ok",
+            "coderesponse": "1"
+        }), 200
+
+    return jsonify({
+        "coderesponse": "0",
+        "msg": "No validat"
+    }), 400
+
+
+# Child
+
+@app.route('/child', methods=['POST'])
+def get_child():
+
+    token = request.headers.get("Authorization")
+
+    if not token:
+        return jsonify({
+            "coderesponse": "0",
+            "msg": "No validat"
+        }), 400
+
+    user = user_dao.getUserByToken(token)
+
+    if not user and not iduser.is_integer:
+        return jsonify({
+            "coderesponse": "0",
+            "msg": "No validat"
+        }), 400
+
+    data = request.get_json()
+    iduser = data.get("iduser")
+
+    childs = child_dao.getChildrenByUser(iduser)
+
+    return jsonify({
+        "msg": str(len(childs)),
+        "coderesponse": "1",
+        "children": childs
+    }), 200
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=True)

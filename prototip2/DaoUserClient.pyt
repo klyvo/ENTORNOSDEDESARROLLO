@@ -26,5 +26,9 @@ class daoUserClient:
                 , "",user_data_raw['email']
                 , user_data_raw['idrole'], user_data_raw['token'])
                 return user
+        
+            else:
+                return None
         else:
             return None
+        
