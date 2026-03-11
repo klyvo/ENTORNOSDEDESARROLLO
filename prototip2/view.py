@@ -1,9 +1,9 @@
-from User import *
-from DaoUserClient import *
+from DaoUserClient import daoUserClient
+from user import User
 
 class ViewConsole:
 
-    daoClient = DaoUserClient()
+    daoClient = daoUserClient()
 
     def viewShowmenu(self):
         print("1: Login")

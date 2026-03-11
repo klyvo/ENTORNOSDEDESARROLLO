@@ -1,16 +1,15 @@
 from flask import Flask, request, jsonify
-from dadesServer import *
-from DaoServer import *
-import uuid
 
+# Initialize Flask app
 app = Flask(__name__)
 
-user_dao = UserDao()
-child_dao = ChildDao()
-tap_dao = TapDao()
-status_dao = StatusDao()
-role_dao = RoleDao()
-treatment_dao = TreatmentDao()
+from dadesServer import *
+from DaoServer import UserDAO, ChildDAO
+import uuid
+
+# Correcting DAO class names
+user_dao = UserDAO()
+child_dao = ChildDAO()
 
 
 # Login

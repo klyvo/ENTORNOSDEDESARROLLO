@@ -1,5 +1,5 @@
 import requests
-from prototip1.client import User
+from user import User
 from user import *
 from flask import Flask, request, jsonify
 
@@ -31,4 +31,3 @@ class daoUserClient:
                 return None
         else:
             return None
-        

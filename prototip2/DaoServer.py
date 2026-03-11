@@ -19,11 +19,14 @@ class UserDAO:
     def login(self, identifier, password):
         for user in self.users:
             if (user.username == identifier or user.email == identifier) and user.password == password:
-                return user.__dict__
+                return user  # Return the User instance directly
         return None
     
     def getUserRole(self,user_id):
         return [relation['rol_id'] for relation in relation_user_child if relation['user_id'] == user_id]
+
+    def getUserByToken(self, token):
+        return next((user for user in self.users if user.token == token), None)
 
 class ChildDAO:
     def __init__(self):
