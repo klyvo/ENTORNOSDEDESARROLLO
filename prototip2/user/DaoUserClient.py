@@ -31,3 +31,19 @@ class daoUserClient:
                 return None
         else:
             return None
+
+    def DaoChild(self, user):
+        """
+        Obtiene los hijos asociados a un usuario usando el endpoint /child del servidor.
+        user: instancia de User (debe tener id y token)
+        Devuelve la lista de hijos o None si hay error.
+        """
+        URL_peticio = self.base_url + "/child"
+        headers = {"Authorization": user.token} if user.token else {}
+        params_post = {"iduser": user.id}
+        response = requests.post(URL_peticio, json=params_post, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            return data.get("children", [])
+        else:
+            return None
