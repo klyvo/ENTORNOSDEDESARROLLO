@@ -1,4 +1,6 @@
-sequenceDiagram
+```mermaid
+    sequenceDiagram
+
     title login with Token: Secure Services
 
     box rgb(200, 230, 255)
@@ -23,3 +25,4 @@ sequenceDiagram
     Client->>Server: Request HTTPS child/ Header TokenUserB
     Server->>BBDD: TokenUserB doesn't exist in BBDD
     Server-->>Client: Response HTTPS Body (Json) Error: Authenticated Service
+    ```
