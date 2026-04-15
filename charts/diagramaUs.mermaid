@@ -1,14 +1,28 @@
 flowchart LR
- subgraph Sistema["Sistema"]
-        UC1["Registrarse"]
-        UC2["Iniciar sesión"]
-        UC3["Ver perfil"]
-        UC4["Editar perfil"]
-        UC5["Realizar compra"]
-        UC6["Gestionar usuarios"]
-        UC7["Gestionar productos"]
-        UC8["Ver reportes"]
-  end
-    Usuario(("Usuario")) --> UC1 & UC2 & UC3 & UC4 & UC5
-    Admin(("Administrador")) --> UC2 & UC6 & UC7 & UC8
-    UC9["Filtrar Reportes" -- Uses] -.-> UC8
+    %% Actores
+    Tutor([Tutor])
+    Cuidador([Cuidador])
+
+    %% Casos de uso
+    UC1((Registrar-se))
+    UC2((Crear perfil de infant))
+    UC3((Registrar temps de pegat))
+    UC4((Consultar informe))
+    UC5((Rebre notificacions))
+    UC6((Calcular temps de pegat))
+    UC7((Generar informe))
+
+    %% Relaciones actores -> casos de uso
+    Tutor --> UC1
+    Tutor --> UC2
+    Tutor --> UC4
+    Tutor --> UC5
+
+    Cuidador --> UC3
+    Cuidador --> UC5
+
+    %% Relaciones entre casos de uso
+    UC3 --> UC6
+    UC6 --> UC5
+    UC3 --> UC7
+    UC7 --> UC4
