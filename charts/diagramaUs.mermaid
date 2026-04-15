@@ -1,0 +1,14 @@
+flowchart LR
+ subgraph Sistema["Sistema"]
+        UC1["Registrarse"]
+        UC2["Iniciar sesión"]
+        UC3["Ver perfil"]
+        UC4["Editar perfil"]
+        UC5["Realizar compra"]
+        UC6["Gestionar usuarios"]
+        UC7["Gestionar productos"]
+        UC8["Ver reportes"]
+  end
+    Usuario(("Usuario")) --> UC1 & UC2 & UC3 & UC4 & UC5
+    Admin(("Administrador")) --> UC2 & UC6 & UC7 & UC8
+    UC9["Filtrar Reportes" -- Uses] -.-> UC8
