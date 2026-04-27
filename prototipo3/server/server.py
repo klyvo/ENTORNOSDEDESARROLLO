@@ -62,6 +62,43 @@ def get_childs():
         # Si no hay hijos o el token no es válido
         return jsonify({"error": "Authenticated Service / No childs found"}), 403
 
+@app.route('/child', methods=['POST'])
+def child():
+    # 1. Obtenemos el token del header 'apikey'
+    token = request.headers.get("apikey")
+    user = None 
+
+    if token:
+        # 2. USAMOS EL NOMBRE CORRECTO: getUserByToken
+        # Y usamos la instancia 'dao' que ya tienes creada
+        user = dao.getUserByToken(token) 
+    
+    # 3. Si el token no existe en la BBDD, user será None
+    if not user:
+        # Nota: Asegúrate de tener importado ApiResponse y asdict
+        # Si no los tienes, puedes usar: return jsonify({"error": "Access not Granted"}), 400
+        response = ApiResponse(
+            msg="Access not Granted",
+            coderesponse="0",
+            data=""  
+        )
+        return jsonify(asdict(response)), 400
+
+    # 4. Si el usuario es válido, leemos el JSON
+    data = request.get_json()
+    
+    # 5. IMPORTANTE: Debes retornar una respuesta válida
+    return jsonify({
+        "status": "success",
+        "message": "Usuario autenticado",
+        "user_found": user['username'],
+        "data_received": data
+    }), 200
+
+
+
+
+
 if __name__ == '__main__':
     # Ejecutamos el servidor en el puerto 5000
     app.run(debug=True, port=5000)

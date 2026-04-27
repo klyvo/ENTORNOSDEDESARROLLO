@@ -19,7 +19,15 @@ class UserDAO:
             database="Tapatapp"
         )
         return connection
-   
+    def getUserByToken(self, token):
+        con=self.connectBBDD()
+        cursor=con.cursor(dictionary=True)
+        query = "SELECT * FROM User WHERE token = %s"
+        cursor.execute(query, (token,))
+        user = cursor.fetchone()
+        cursor.close()
+        con.close()
+        return user
     def login(self, identifier, password):
         # conexio a la base de dades
         con=self.connectBBDD()
@@ -62,9 +70,13 @@ class UserDAO:
         data = username + milliseconds
         hash_object = hashlib.sha256(data.encode('utf-8'))
         return hash_object.hexdigest()
-        
+    
+class childDao:
+    def getChilds(self,username):
+        return "TO-DO"
+ 
 dao = UserDAO()
-print(dao.getHash("mare"))
-u = dao.login("mare", "mare")
+
+u = dao.getUserByToken("ff1e48b02218f2b8186ac61958578c5add68ec1ae5f6bf7622b6ba28e4e7248c")
 print(u)
 
