@@ -73,7 +73,34 @@ class UserDAO:
     
 class childDao:
     def getChilds(self,username):
+        
         return "TO-DO"
+    
+    def connectBBDD(self):
+        # Usamos la misma conexión que UserDAO
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="Tapatapp"
+        )
+        return connection
+
+    def getTapsByToken(self, token):
+        con = self.connectBBDD()
+        cursor = con.cursor(dictionary=True)
+        query = """
+            SELECT t.* FROM Tap t
+            JOIN Child c ON t.child_id = c.id  -- Antes tenías id_child
+            JOIN RelationUserChild ruc ON c.id = ruc.child_id
+            JOIN User u ON ruc.user_id = u.id
+            WHERE u.token = %s
+        """
+        cursor.execute(query, (token,))
+        taps = cursor.fetchall()
+        cursor.close()
+        con.close()
+        return taps
  
 dao = UserDAO()
 

@@ -1,9 +1,24 @@
 from flask import Flask, request, jsonify
-from DaoServer import UserDAO
 from dataclasses import asdict # Asegúrate de tener esto para el ApiResponse
+from DaoServer import UserDAO, childDao # Importamos ambos
 
 app = Flask(__name__)
-dao = UserDAO()
+daoUser = UserDAO()
+daoChild = childDao() # Nueva instancia
+
+@app.route('/taps', methods=['GET'])
+def get_taps():
+    token = request.headers.get('api-token')
+    if not token:
+        return jsonify({"error": "No token provided"}), 401
+        
+    # Llamamos al método desde el DAO de Child, no de User
+    taps = daoChild.getTapsByToken(token)
+    
+    if taps:
+        return jsonify({"status": "success", "taps": taps}), 200
+    else:
+        return jsonify({"status": "error", "message": "No taps found"}), 404
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -13,7 +28,7 @@ def login():
 
     if token:
         # Intentamos buscar al usuario por ese token
-        user = dao.getUserByToken(token)
+        user = daoUser.getUserByToken(token)
     
     # 2. Si no hay token o el token no es válido, intentamos login por Body (JSON)
     if not user:
@@ -23,7 +38,7 @@ def login():
             password = data.get('password')
             
             if identifier and password:
-                user = dao.login(identifier, password)
+                user = daoUser.login(identifier, password)
 
     # 3. Respuesta final según si encontramos al usuario o no
     if user:
@@ -52,7 +67,7 @@ def get_childs():
     if not token:
         return jsonify({"error": "No token provided"}), 401
 
-    con = dao.connectBBDD()
+    con = daoChild.connectBBDD()
     cursor = con.cursor(dictionary=True)
     
     query = """

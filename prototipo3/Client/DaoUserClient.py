@@ -5,6 +5,22 @@ class DaoUserClient:
         self.base_url = base_url
         self.token = None
 
+    def get_taps(self, token):
+        url = f"{self.base_url}/taps"
+        # Enviamos el token en los headers como vimos en ApiTester
+        headers = {'api-token': token} 
+        
+        try:
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                return response.json().get('taps', [])
+            else:
+                print(f"Error: {response.status_code}")
+                return []
+        except Exception as e:
+            print(f"Error de conexión: {e}")
+            return []
+
     def login(self, username, password):
         """
         Login tradicional: Envía username y password.
