@@ -7,8 +7,8 @@ class DaoUserClient:
 
     def login(self, username, password):
         """
-        Primer paso: Intercambia credenciales por un token.
-        Basado en el flujo del diagrama de secuencia.
+        Login tradicional: Envía username y password.
+        Recibe el objeto user y guarda el token.
         """
         url = f"{self.base_url}/login"
         payload = {
@@ -20,9 +20,10 @@ class DaoUserClient:
             response = requests.post(url, json=payload)
             if response.status_code == 200:
                 data = response.json()
-                self.token = data['token'] # Guardamos el token para futuras peticiones
-                print(f"✅ Login exitoso. Token obtenido.")
-                return self.token
+                # En el Prototipo 3, el token está dentro de data['user']['token']
+                self.token = data['user']['token']
+                print(f"✅ Login exitoso. Token guardado.")
+                return data # Devolvemos todo el dict para la View
             else:
                 print(f"❌ Error en login: {response.status_code}")
                 return None
@@ -30,31 +31,50 @@ class DaoUserClient:
             print(f"⚠️ Error de conexión: {e}")
             return None
 
-    def get_childs_with_token(self, token_to_use=None):
+    def login_con_token(self, token_to_use=None):
         """
-        Segundo paso: Realiza peticiones usando SOLO el token.
-        Tal como dibujaste en la pizarra: /getChilds enviando TokenA.
+        Login por Token: Envía el token en el header al endpoint /login.
         """
-        # Si no pasamos un token por parámetro, usamos el que tengamos guardado
+        tk = token_to_use if token_to_use else self.token
+        if not tk:
+            print("🚫 No hay token disponible.")
+            return None
+
+        url = f"{self.base_url}/login"
+        headers = {"api-token": tk}
+
+        try:
+            response = requests.post(url, headers=headers)
+            if response.status_code == 200:
+                print(f"✅ Re-autenticación por token exitosa.")
+                return response.json()
+            else:
+                print(f"❌ Token inválido: {response.status_code}")
+                return None
+        except Exception as e:
+            print(f"⚠️ Error de conexión: {e}")
+            return None
+
+    def get_childs(self, token_to_use=None):
+        """
+        Obtiene la lista de hijos usando el token en el header.
+        """
         tk = token_to_use if token_to_use else self.token
         
         if not tk:
-            print("🚫 No hay token disponible. Debes hacer login primero.")
+            print("🚫 No hay token disponible.")
             return None
 
         url = f"{self.base_url}/getChilds"
-        # Enviamos el token en el Header como 'TokenUser' (según tu diagrama)
-        headers = {
-            "TokenUser": tk
-        }
+        headers = {"api-token": tk}
 
         try:
             response = requests.get(url, headers=headers)
             if response.status_code == 200:
-                return response.json().get('childs', [])
+                return response.json()
             else:
-                print(f"❌ Error de autenticación/datos: {response.status_code}")
-                return None
+                print(f"❌ Error obteniendo hijos: {response.status_code}")
+                return response.json() # Devolvemos el json con el error del server
         except Exception as e:
             print(f"⚠️ Error de conexión: {e}")
             return None
@@ -63,16 +83,17 @@ class DaoUserClient:
 if __name__ == "__main__":
     client = DaoUserClient()
     
-    # 1. Login inicial para conseguir el token
-    mi_token = client.login("mare", "mare")
+    # 1. Prueba Login
+    print("--- Probando Login ---")
+    resultado = client.login("mare", "mare")
     
-    if mi_token:
-        print(f"Mi Token actual es: {mi_token}")
+    if resultado:
+        token = client.token
+        print(f"Token obtenido: {token}")
         
-        # 2. A partir de aquí, ya podemos trabajar SOLO con el token
-        print("\nSolicitando lista de hijos usando solo el token...")
-        hijos = client.get_childs_with_token(mi_token)
-        
-        if hijos:
-            for hijo in hijos:
-                print(f"👶 Niño encontrado: {hijo['child_name']} (Sueño medio: {hijo['sleep_average']}h)")
+        # 2. Prueba Get Childs
+        print("\n--- Probando Get Childs ---")
+        hijos_res = client.get_childs(token)
+        if hijos_res and hijos_res.get('status') == 'success':
+            for hijo in hijos_res['childs']:
+                print(f"👶 Niño: {hijo['name']} | Edad: {hijo['age']}")
